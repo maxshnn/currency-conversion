@@ -54,6 +54,6 @@ pubspec.lock
 # FVM Version Cache
 .fvm/
 
-**/api_keys.dart
+# **/api_keys.dart
 
 .vscode
