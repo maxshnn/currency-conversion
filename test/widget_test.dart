@@ -5,26 +5,30 @@
 // gestures. You can also use WidgetTester to find child widgets in the widget
 // tree, read text, and verify that the values of widget properties are correct.
 
+import 'package:currency_conversion/core/di/di.dart';
+import 'package:currency_conversion/data/data.dart';
+import 'package:currency_conversion/domain/domain.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:currency_conversion/main.dart';
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
-void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  await setDependencyInjection();
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+  test(
+    'currencyConversionRepository',
+    () async {
+      CurrencyConversionRepository _currencyConversionRepository =
+          CurrencyConversionRepositoryImpl(
+        currencyConversionService: injection(),
+        currencyQuotesLocal: injection(),
+        mapper: injection(),
+      );
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
-  });
+      var data = await _currencyConversionRepository.getCurrencyQuotes(
+          base: 'USD', amount: 1);
+      expect(data?.quotes ?? [], isNotEmpty);
+    },
+  );
 }
