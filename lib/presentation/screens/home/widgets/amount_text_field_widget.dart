@@ -1,5 +1,7 @@
+import 'package:currency_conversion/presentation/helpers/input_formatter_helper.dart';
 import 'package:currency_conversion/presentation/resources/enums.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class AmountTextFieldWidget extends StatefulWidget {
   final String labelText;
@@ -28,6 +30,7 @@ class _AmountTextFieldWidgetState extends State<AmountTextFieldWidget> {
     return TextField(
       controller: widget.controller,
       readOnly: widget.readOnly,
+      keyboardType: TextInputType.number,
       onChanged: (value) {
         if (widget.onChanged != null) {
           widget.onChanged!(value);
@@ -37,6 +40,10 @@ class _AmountTextFieldWidgetState extends State<AmountTextFieldWidget> {
         fontSize: 20,
         fontWeight: FontWeight.w600,
       ),
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
+        DoubleInputFormatterHelper()
+      ],
       decoration: InputDecoration(
         enabledBorder: _getBorder(),
         focusedBorder: _getBorder(),
