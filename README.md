@@ -1,16 +1,39 @@
-# currency_conversion
+# Currency Conversion
 
-A new Flutter project.
+What kind of application is this?
 
-## Getting Started
+This is a currency conversion application that works offline
 
-This project is a starting point for a Flutter application.
+It's simple
 
-A few resources to get you started if this is your first Flutter project:
+## How start project
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Start cloning
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```bash
+git clone https://github.com/maxshnn/currency-conversion.git
+
+```
+
+or
+
+```bash
+git@github.com:maxshnn/currency-conversion.git
+
+```
+
+After that, go to the project directory and register
+
+```bash
+flutter pub get
+
+```
+
+then
+
+```bash
+flutter pub run build_runner build --delete-conflicting-outputs
+
+```
+
+Enjoy your use!
