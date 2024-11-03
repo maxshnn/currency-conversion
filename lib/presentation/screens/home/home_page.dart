@@ -65,6 +65,8 @@ class _HomePageState extends State<HomePage> {
           },
           builder: (context, state) {
             return Scaffold(
+              floatingActionButton:
+                  const Text('by Maxim Shonin | git: @maxshnn'),
               appBar: AppBar(
                 title: _buildAppBarTitle(context),
                 backgroundColor: Colors.greenAccent,
