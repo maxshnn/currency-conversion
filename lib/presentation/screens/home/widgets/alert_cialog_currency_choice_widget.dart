@@ -21,6 +21,12 @@ class _AlertDialogCurrencyChoiceWidgetState
   String? selectedValue;
 
   @override
+  void initState() {
+    selectedValue = widget.value;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return AlertDialog.adaptive(
       title: const Text('Choose a currency'),

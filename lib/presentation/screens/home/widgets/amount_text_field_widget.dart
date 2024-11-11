@@ -1,4 +1,5 @@
 import 'package:currency_conversion/presentation/helpers/input_formatter_helper.dart';
+import 'package:currency_conversion/presentation/resources/app_colors.dart';
 import 'package:currency_conversion/presentation/resources/enums.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -60,7 +61,7 @@ class _AmountTextFieldWidgetState extends State<AmountTextFieldWidget> {
         color = Colors.red;
         break;
       case ProgressStatus.success:
-        color = Colors.greenAccent;
+        color = AppColors.primaryColor;
         break;
       default:
         color = Colors.grey;

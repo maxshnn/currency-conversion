@@ -6,6 +6,8 @@ import 'package:currency_conversion/presentation/screens/home/widgets/amount_tex
 import 'package:currency_conversion/presentation/screens/home/widgets/convert_button_widget.dart';
 import 'package:currency_conversion/presentation/screens/home/widgets/alert_cialog_currency_choice_widget.dart';
 import 'package:currency_conversion/presentation/screens/home/widgets/text_error_widget.dart';
+import 'package:currency_conversion/presentation/widgets/base_app_bar.dart';
+import 'package:currency_conversion/presentation/widgets/base_progress_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -64,18 +66,92 @@ class _HomePageState extends State<HomePage> {
             }
           },
           builder: (context, state) {
+            final bloc = context.read<CurrencyBloc>();
             return Scaffold(
               floatingActionButton:
                   const Text('by Maxim Shonin | git: @maxshnn'),
-              appBar: AppBar(
-                title: _buildAppBarTitle(context),
-                backgroundColor: Colors.greenAccent,
-                centerTitle: true,
+              appBar: BaseAppBar(
+                title: state.from == null && state.to == null
+                    ? const Text('Currency conversion')
+                    : Text(
+                        '${state.from ?? '...'} -> ${state.to ?? '...'}',
+                      ),
               ),
               body: Center(
                 child: switch (state.status) {
-                  ProgressStatus.initial => _buildProgressIndicator(context),
-                  _ => _buildBody(context),
+                  ProgressStatus.initial => const BaseProgressIndicator(),
+                  _ => ListView(
+                      padding: const EdgeInsets.symmetric(horizontal: 22.0),
+                      shrinkWrap: true,
+                      children: [
+                        Center(
+                          child: TextErrorWidget(
+                            error: state.error,
+                            status: state.status,
+                          ),
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Flexible(
+                              child: AmountTextFieldWidget(
+                                labelText: 'You send',
+                                status: state.status,
+                                onChanged: (value) => bloc.add(
+                                  CurrencyEvent.addValues(value: value),
+                                ),
+                              ),
+                            ),
+                            SelectCurrencyButtonWidget(
+                              onPressed: () => _onTapSelectCurrency(
+                                context: context,
+                                items: state.symbols,
+                                value: state.from ?? '',
+                                onChanged: (value) => bloc.add(
+                                  CurrencyEvent.addValues(from: value),
+                                ),
+                              ),
+                              value: state.from,
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: ConvertButtonWidget(
+                              onPressed: () => bloc.add(
+                                const CurrencyEvent.submit(),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.max,
+                          children: [
+                            Flexible(
+                              child: AmountTextFieldWidget(
+                                controller: _toTextFieldController,
+                                labelText: 'They get',
+                                readOnly: true,
+                                status: bloc.state.status,
+                              ),
+                            ),
+                            SelectCurrencyButtonWidget(
+                              onPressed: () => _onTapSelectCurrency(
+                                context: context,
+                                items: state.symbols,
+                                value: state.to ?? '',
+                                onChanged: (value) => bloc.add(
+                                  CurrencyEvent.addValues(to: value),
+                                ),
+                              ),
+                              value: state.to,
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                 },
               ),
             );
@@ -100,99 +176,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildAppBarTitle(BuildContext context) {
-    var state = context.watch<CurrencyBloc>().state;
-    String? from = state.from;
-    String? to = state.to;
-    if (from == null && to == null) {
-      return const Text('Currency conversion');
-    } else {
-      return Text('${from ?? '...'} -> ${to ?? '...'}');
-    }
-  }
-
-  Widget _buildBody(BuildContext context) {
-    var bloc = context.watch<CurrencyBloc>();
-
-    String? from = bloc.state.from;
-    String? to = bloc.state.to;
-
-    var allCurrency = bloc.state.symbols;
-
-    return ListView(
-      padding: const EdgeInsets.symmetric(horizontal: 22.0),
-      shrinkWrap: true,
-      children: [
-        Center(
-          child: TextErrorWidget(
-            error: bloc.state.error,
-            status: bloc.state.status,
-          ),
-        ),
-        Row(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Flexible(
-              child: AmountTextFieldWidget(
-                labelText: 'You send',
-                status: bloc.state.status,
-                onChanged: (value) => bloc.add(
-                  CurrencyEvent.addValues(value: value),
-                ),
-              ),
-            ),
-            SelectCurrencyButtonWidget(
-              onPressed: () => _onTapSelectCurrency(
-                context: context,
-                items: allCurrency,
-                value: from ?? '',
-                onChanged: (value) => bloc.add(
-                  CurrencyEvent.addValues(from: value),
-                ),
-              ),
-              value: from,
-            ),
-          ],
-        ),
-        Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Align(
-            alignment: Alignment.center,
-            child: ConvertButtonWidget(
-              onPressed: () => bloc.add(
-                const CurrencyEvent.submit(),
-              ),
-            ),
-          ),
-        ),
-        Row(
-          mainAxisSize: MainAxisSize.max,
-          children: [
-            Flexible(
-              child: AmountTextFieldWidget(
-                controller: _toTextFieldController,
-                labelText: 'They get',
-                readOnly: true,
-                status: bloc.state.status,
-              ),
-            ),
-            SelectCurrencyButtonWidget(
-              onPressed: () => _onTapSelectCurrency(
-                context: context,
-                items: allCurrency,
-                value: to ?? '',
-                onChanged: (value) => bloc.add(
-                  CurrencyEvent.addValues(to: value),
-                ),
-              ),
-              value: to,
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
   void _onTapSelectCurrency({
     required BuildContext context,
     required List<String> items,
@@ -208,12 +191,6 @@ class _HomePageState extends State<HomePage> {
           onSubmit: onChanged,
         );
       },
-    );
-  }
-
-  Widget _buildProgressIndicator(BuildContext context) {
-    return const CircularProgressIndicator(
-      color: Colors.amberAccent,
     );
   }
 }

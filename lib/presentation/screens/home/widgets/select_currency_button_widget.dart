@@ -1,3 +1,4 @@
+import 'package:currency_conversion/presentation/resources/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class SelectCurrencyButtonWidget extends StatelessWidget {
@@ -11,38 +12,31 @@ class SelectCurrencyButtonWidget extends StatelessWidget {
     return ElevatedButton(
       style: const ButtonStyle(
         elevation: WidgetStatePropertyAll(0),
-        backgroundColor: WidgetStatePropertyAll(Colors.transparent),
+        backgroundColor: WidgetStatePropertyAll(
+          Colors.transparent,
+        ),
       ),
       onPressed: onPressed,
       child: Row(
         children: [
-          _buildText(context: context),
-          _buildIcon(context: context),
+          value == null
+              ? const SizedBox(
+                  width: 20,
+                )
+              : Text(
+                  value ?? '',
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.primaryColor,
+                  ),
+                ),
+          const Icon(
+            size: 30,
+            Icons.keyboard_arrow_down_outlined,
+            color: AppColors.primaryColor,
+          ),
         ],
-      ),
-    );
-  }
-
-  Widget _buildIcon({required BuildContext context}) {
-    return const Icon(
-      size: 30,
-      Icons.keyboard_arrow_down_outlined,
-      color: Colors.greenAccent,
-    );
-  }
-
-  Widget _buildText({required BuildContext context}) {
-    if (value == null) {
-      return const SizedBox(
-        width: 20,
-      );
-    }
-    return Text(
-      value!,
-      style: const TextStyle(
-        fontSize: 20,
-        fontWeight: FontWeight.w600,
-        color: Colors.greenAccent,
       ),
     );
   }

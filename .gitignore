@@ -48,6 +48,7 @@ pubspec.lock
 # Codegeneration
 *.g.dart
 *.freezed.dart
+*.auto_mappr.dart
 
 # Flutter Version Manager
 

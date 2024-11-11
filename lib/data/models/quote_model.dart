@@ -1,4 +1,8 @@
-part of '../data.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:hive_ce/hive.dart';
+
+part 'quote_model.g.dart';
+part 'quote_model.freezed.dart';
 
 @freezed
 @HiveType(typeId: 1)

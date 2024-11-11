@@ -1,4 +1,6 @@
 import 'package:currency_conversion/data/data.dart';
+import 'package:currency_conversion/data/mapper/auto_mappr.dart';
+import 'package:currency_conversion/data/models/currensy_quotes_model.dart';
 import 'package:currency_conversion/domain/domain.dart';
 import 'package:currency_conversion/hive_registrar.g.dart';
 import 'package:dio/dio.dart';
@@ -34,24 +36,26 @@ Future<void> setDependencyInjection() async {
         injection(),
       ),
     )
-    // ..registerLazySingletonAsync(
-    //   () async => ,
-    // )
     ..registerLazySingleton<CurrencyQuotesLocal>(
       () => CurrencyQuotesLocal(
         box: currencyQuotesBox,
       ),
     )
+    ..registerLazySingleton<CurrencyQuoteLocalRepository>(
+      () => CurrencyQuoteLocalRepositoryImpl(
+        mapper: injection(),
+        currencyQuotesLocal: injection(),
+      ),
+    )
     ..registerLazySingleton<CurrencyConversionRepository>(
       () => CurrencyConversionRepositoryImpl(
         currencyConversionService: injection(),
-        currencyQuotesLocal: injection(),
         mapper: injection(),
       ),
     )
     ..registerLazySingleton<CurrencyConversionUseCase>(
       () => CurrencyConversionUseCase(
-        currencyConversionRepository: injection(),
-      ),
+          currencyConversionRepository: injection(),
+          currencyQuoteLocalRepository: injection()),
     );
 }
