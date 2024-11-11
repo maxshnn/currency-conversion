@@ -1,4 +1,3 @@
-import 'package:currency_conversion/data/data.dart';
 import 'package:currency_conversion/presentation/resources/enums.dart';
 import 'package:flutter/material.dart';
 
