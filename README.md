@@ -21,6 +21,7 @@ or
 git@github.com:maxshnn/currency-conversion.git
 
 ```
+(it is advisable to use [Flutter Version Manager (FVM)](https://fvm.app/documentation/getting-started/installation))
 
 After that, go to the project directory and register
 
