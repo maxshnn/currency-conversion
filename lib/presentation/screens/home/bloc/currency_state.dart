@@ -9,7 +9,7 @@ class CurrencyState with _$CurrencyState {
     double? amount,
     @Default([]) List<String> symbols,
     double? result,
-    Object? error,
+    String? error,
   }) = _CurrencyState;
   // const factory CurrencyState.initial() = _Initial;
   // const factory CurrencyState.success({

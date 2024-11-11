@@ -11,7 +11,8 @@ class AppInterceptor extends QueuedInterceptor {
         handler.reject(
           BadRequest(
             requestOptions: err.requestOptions,
-            message: err.message ?? 'Неверный запрос',
+            message: err.message ??
+                'Неверный запрос. Пожалуйста, проверьте введённые данные и повторите попытку.',
           ),
         );
         break;
@@ -19,7 +20,8 @@ class AppInterceptor extends QueuedInterceptor {
         handler.reject(
           Forbidden(
             requestOptions: err.requestOptions,
-            message: err.message ?? 'Доступ запрещен',
+            message: err.message ??
+                'Доступ запрещён. У вас нет прав для выполнения этого действия.',
           ),
         );
         break;
@@ -27,7 +29,8 @@ class AppInterceptor extends QueuedInterceptor {
         handler.reject(
           NotFound(
             requestOptions: err.requestOptions,
-            message: err.message ?? 'Ресурс не найден',
+            message: err.message ??
+                'Запрашиваемый ресурс не найден. Проверьте правильность ссылки.',
           ),
         );
         break;
@@ -35,7 +38,8 @@ class AppInterceptor extends QueuedInterceptor {
         handler.reject(
           Conflict(
             requestOptions: err.requestOptions,
-            message: err.message ?? 'Конфликт данных',
+            message: err.message ??
+                'Конфликт данных. Обновите страницу и попробуйте снова.',
           ),
         );
         break;
@@ -43,7 +47,8 @@ class AppInterceptor extends QueuedInterceptor {
         handler.reject(
           UnprocessableContent(
             requestOptions: err.requestOptions,
-            message: err.message ?? 'Невозможно обработать содержимое',
+            message: err.message ??
+                'Невозможно обработать данные. Проверьте ввод и повторите попытку.',
           ),
         );
         break;
@@ -51,31 +56,17 @@ class AppInterceptor extends QueuedInterceptor {
         handler.reject(
           TooManyRequests(
             requestOptions: err.requestOptions,
-            message: err.message ?? 'Слишком много запросов',
+            message: err.message ??
+                'Слишком много запросов. Возможно закончились токены.',
           ),
         );
         break;
-      case 500:
+      case 500 || 502 || 503:
         handler.reject(
           ServerUnavailable(
             requestOptions: err.requestOptions,
-            message: err.message ?? 'Внутренняя ошибка сервера',
-          ),
-        );
-        break;
-      case 502:
-        handler.reject(
-          ServerUnavailable(
-            requestOptions: err.requestOptions,
-            message: err.message ?? 'Плохой шлюз',
-          ),
-        );
-        break;
-      case 503:
-        handler.reject(
-          ServerTemporarilyUnavailable(
-            requestOptions: err.requestOptions,
-            message: err.message ?? 'Сервер временно недоступен',
+            message: err.message ??
+                'Сервер временно недоступен. Повторите попытку позже.',
           ),
         );
         break;
@@ -83,7 +74,8 @@ class AppInterceptor extends QueuedInterceptor {
         handler.reject(
           UnknownError(
             requestOptions: err.requestOptions,
-            message: err.message ?? 'Неизвестная ошибка',
+            message: err.message ??
+                'Неизвестная ошибка. Повторите попытку позже или обратитесь в поддержку.',
           ),
         );
         break;

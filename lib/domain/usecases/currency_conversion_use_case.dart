@@ -2,9 +2,12 @@ part of '../domain.dart';
 
 class CurrencyConversionUseCase {
   final CurrencyConversionRepository _currencyConversionRepository;
+  final CurrencyQuoteLocalRepository _currencyQuoteLocalRepository;
   CurrencyConversionUseCase({
     required CurrencyConversionRepository currencyConversionRepository,
-  }) : _currencyConversionRepository = currencyConversionRepository;
+    required CurrencyQuoteLocalRepository currencyQuoteLocalRepository,
+  })  : _currencyConversionRepository = currencyConversionRepository,
+        _currencyQuoteLocalRepository = currencyQuoteLocalRepository;
 
   String get _baseCurrency => 'USD';
 
@@ -49,7 +52,7 @@ class CurrencyConversionUseCase {
     result = _sortCurrencyQuotes(result);
 
     if (result != null) {
-      await _currencyConversionRepository.updateLocalCurrencyQuote(
+      await _currencyQuoteLocalRepository.updateLocalCurrencyQuote(
         data: result,
       );
     }
@@ -61,7 +64,7 @@ class CurrencyConversionUseCase {
     required String to,
     required double amount,
   }) async {
-    var data = await _currencyConversionRepository.getLocalCurrencyQuote(
+    var data = await _currencyQuoteLocalRepository.getLocalCurrencyQuote(
         base: _baseCurrency);
 
     if (data == null) return null;
@@ -86,7 +89,7 @@ class CurrencyConversionUseCase {
   }
 
   Future<CurrencySymbol?> getLocalAllCurrencies() async {
-    var data = await _currencyConversionRepository.getLocalCurrencyQuote(
+    var data = await _currencyQuoteLocalRepository.getLocalCurrencyQuote(
         base: _baseCurrency);
     return _fromCurrencyQuotesToCurrencySymbol(data: data);
   }

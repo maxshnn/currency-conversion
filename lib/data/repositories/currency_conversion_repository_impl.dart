@@ -1,16 +1,12 @@
 part of '../data.dart';
 
-interface class CurrencyConversionRepositoryImpl
-    implements CurrencyConversionRepository {
+class CurrencyConversionRepositoryImpl implements CurrencyConversionRepository {
   final CurrencyConversionService _currencyConversionService;
-  final CurrencyQuotesLocal _currencyQuotesLocal;
   final Mappr _mapper;
   CurrencyConversionRepositoryImpl({
     required CurrencyConversionService currencyConversionService,
-    required CurrencyQuotesLocal currencyQuotesLocal,
     required Mappr mapper,
   })  : _currencyConversionService = currencyConversionService,
-        _currencyQuotesLocal = currencyQuotesLocal,
         _mapper = mapper;
 
   String get _accessKey => ApiKeys.apiLayerKey;
@@ -50,37 +46,20 @@ interface class CurrencyConversionRepositoryImpl
       accessKey: _accessKey,
       base: base,
     );
-    // var result = _butifyCurrencyQuotes(base: base, model: data);
-    // await _currencyQuotesLocal.updateCurrencyQuotes(result);
     return _mapper.convert<CurrencyQuotesModel, CurrencyQuotes>(data);
   }
 
-  @override
-  Future<CurrencyQuotes?> getLocalCurrencyQuote({
-    required String base,
-    double amount = 1,
-  }) async {
-    var data = await _currencyQuotesLocal.getCurrencyQuotes();
-    return _mapper.tryConvert<CurrencyQuotesModel, CurrencyQuotes>(data);
-  }
-
-  @override
-  Future<void> updateLocalCurrencyQuote({required CurrencyQuotes data}) async {
-    var result = _mapper.convert<CurrencyQuotes, CurrencyQuotesModel>(data);
-    return await _currencyQuotesLocal.updateCurrencyQuotes(result);
-  }
-
-  CurrencyQuotesModel _butifyCurrencyQuotes({
-    required String base,
-    required CurrencyQuotesModel model,
-  }) {
-    var quotes = model.quotes
-        .map<QuoteModel>(
-          (quote) => quote.copyWith(
-            name: quote.name.replaceFirst(base, ''),
-          ),
-        )
-        .toList();
-    return model.copyWith(quotes: quotes);
-  }
+  // CurrencyQuotesModel _butifyCurrencyQuotes({
+  //   required String base,
+  //   required CurrencyQuotesModel model,
+  // }) {
+  //   var quotes = model.quotes
+  //       .map<QuoteModel>(
+  //         (quote) => quote.copyWith(
+  //           name: quote.name.replaceFirst(base, ''),
+  //         ),
+  //       )
+  //       .toList();
+  //   return model.copyWith(quotes: quotes);
+  // }
 }

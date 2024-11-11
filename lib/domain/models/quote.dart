@@ -1,4 +1,5 @@
-part of '../domain.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part 'quote.freezed.dart';
 
 @freezed
 class Quote with _$Quote {

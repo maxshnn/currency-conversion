@@ -1,4 +1,5 @@
-part of '../domain.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part 'symbol.freezed.dart';
 
 @freezed
 class Symbol with _$Symbol {

@@ -19,14 +19,13 @@ void main() async {
   test(
     'currencyConversionRepository',
     () async {
-      CurrencyConversionRepository _currencyConversionRepository =
+      CurrencyConversionRepository currencyConversionRepository =
           CurrencyConversionRepositoryImpl(
         currencyConversionService: injection(),
-        currencyQuotesLocal: injection(),
         mapper: injection(),
       );
 
-      var data = await _currencyConversionRepository.getCurrencyQuotes(
+      var data = await currencyConversionRepository.getCurrencyQuotes(
           base: 'USD', amount: 1);
       expect(data?.quotes ?? [], isNotEmpty);
     },

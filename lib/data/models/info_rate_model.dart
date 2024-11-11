@@ -1,4 +1,7 @@
-part of '../data.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+
+part 'info_rate_model.g.dart';
+part 'info_rate_model.freezed.dart';
 
 @freezed
 class InfoRateModel with _$InfoRateModel {

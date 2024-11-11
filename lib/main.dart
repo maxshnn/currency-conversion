@@ -1,3 +1,4 @@
+import 'package:currency_conversion/presentation/resources/app_colors.dart';
 import 'package:currency_conversion/presentation/screens/home/home_page.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +20,7 @@ class App extends StatelessWidget {
       title: 'Currency conversion',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.greenAccent,
+          seedColor: AppColors.primaryColor,
         ),
         useMaterial3: true,
       ),

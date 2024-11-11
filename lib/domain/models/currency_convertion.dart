@@ -1,4 +1,5 @@
-part of '../domain.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
+part 'currency_convertion.freezed.dart';
 
 @freezed
 class CurrencyConvertion with _$CurrencyConvertion {

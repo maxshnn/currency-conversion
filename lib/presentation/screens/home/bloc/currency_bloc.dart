@@ -95,7 +95,7 @@ class CurrencyBloc extends Bloc<CurrencyEvent, CurrencyState> {
   void _emitError(Emitter emit, DioException error) {
     emit(
       state.copyWith(
-        error: error,
+        error: error.message,
         status: ProgressStatus.failure,
       ),
     );
